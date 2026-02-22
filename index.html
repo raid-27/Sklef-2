@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>بوابة العملاء</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  direction: rtl;
+}
+
+.container {
+  background: #ffffff;
+  width: 360px;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: #2c5364;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: #2c5364;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #1e3c4a;
+}
+
+#error {
+  color: red;
+  font-size: 14px;
+}
+
+#dashboard {
+  display: none;
+}
+
+.data-box {
+  text-align: right;
+  margin-top: 15px;
+  background: #f5f7fa;
+  padding: 15px;
+  border-radius: 10px;
+}
+.logout {
+  margin-top: 15px;
+  background: #c0392b;
+}
+.logout:hover {
+  background: #962d22;
+}
+</style>
+</head>
+<body>
+
+<div class="container" id="loginBox">
+  <h2>تسجيل الدخول</h2>
+  <input type="text" id="username" placeholder="اسم المستخدم">
+  <input type="password" id="password" placeholder="كلمة المرور">
+  <button onclick="login()">دخول</button>
+  <p id="error"></p>
+</div>
+
+<div class="container" id="dashboard">
+  <h2>مرحبا <span id="displayName"></span></h2>
+  <div class="data-box" id="userInfo"></div>
+  <button class="logout" onclick="logout()">تسجيل خروج</button>
+</div>
+
+<script>
+
+/* ================================
+   هنا فقط تقوم بتعديل بيانات المستخدمين
+   ================================ */
+
+var users = {
+  "user1": {
+    password: "12345",
+    name: "أحمد محمد",
+    data: [
+      "رقم الملف: 001",
+      "الحالة: نشط",
+      "رابط التقرير: PDF1.pdf"
+    ]
+  },
+
+  "user2": {
+    password: "67890",
+    name: "فاطمة علي",
+    data: [
+      "رقم الملف: 002",
+      "الحالة: قيد المراجعة",
+      "رابط التقرير: PDF2.pdf"
+    ]
+  }
+
+};
+
+/* ================================
+   لا تعدل تحت هذا السطر
+   ================================ */
+
+function login() {
+  var user = document.getElementById("username").value;
+  var pass = document.getElementById("password").value;
+
+  if (users[user] && users[user].password === pass) {
+
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("dashboard").style.display = "block";
+    document.getElementById("displayName").innerText = users[user].name;
+
+    var infoBox = document.getElementById("userInfo");
+    infoBox.innerHTML = "";
+
+    users[user].data.forEach(function(item){
+      var p = document.createElement("p");
+      p.textContent = item;
+      infoBox.appendChild(p);
+    });
+
+  } else {
+    document.getElementById("error").innerText = "اسم المستخدم أو كلمة المرور غير صحيحة";
+  }
+}
+
+function logout() {
+  document.getElementById("dashboard").style.display = "none";
+  document.getElementById("loginBox").style.display = "block";
+  document.getElementById("error").innerText = "";
+}
+
+</script>
+
+</body>
+</html>
